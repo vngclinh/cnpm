@@ -119,6 +119,7 @@ public class AddCarFrm extends JFrame implements ActionListener {
             }
             if(!plate.matches("^[0-9]{2}[A-Z]{1}-[0-9]{3,5}(\\.[0-9]{2,3})?$")){
                 JOptionPane.showMessageDialog(this, "Invalid plate number format, must be like '30G-123.45' or '30G-123.123");
+                return;
             }
             if (name.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Please enter the car name.");
@@ -134,6 +135,14 @@ public class AddCarFrm extends JFrame implements ActionListener {
             }
 
             CarDAO cd = new CarDAO();
+            try {
+                if(cd.isPlateNumberExists(plate)){
+                    JOptionPane.showMessageDialog(this, "Plate number already existed!");
+                    return;
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
             Car c = new Car(plate, name, brand, type);
             try{
                 cd.addCar(c);

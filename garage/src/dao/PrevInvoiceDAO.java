@@ -9,7 +9,7 @@ public class PrevInvoiceDAO extends DAO {
     }
     public boolean addInvoice(PrevInvoice invoice){
         String sql = "INSERT INTO tblInvoice(createdat, userid, customerid) VALUES (?, ?, ?)";
-        String sqlcarinvoice = "INSERT INTO tblCarInvoice(carid, invoiceid, slotid) VALUES (?, ?, ?)";
+        String sqlcarinvoice = "INSERT INTO tblCarInvoice(carid, invoiceid, slotid, timestart, timeend) VALUES (?, ?, ?, ?, ?)";
         String sqladded = "INSERT INTO tblAddedSerCom(quantity, carInvoiceID, sercomID) VALUES (?, ?, ?)";
         String sqltechser = "INSERT INTO tblTechService(timestart, timeend, serviceID, technicianID) VALUES (?, ?, ?, ?)";
 
@@ -47,6 +47,8 @@ public class PrevInvoiceDAO extends DAO {
                 ps.setInt(1, carInvoice.getCar().getId());
                 ps.setInt(2, invoice.getId());
                 ps.setInt(3, carInvoice.getSlot().getId());
+                ps.setTimestamp(4, Timestamp.valueOf(carInvoice.getTimeStart()));
+                ps.setTimestamp(5, Timestamp.valueOf(carInvoice.getTimeEnd()));
                 ps.executeUpdate();
 
                 rs = ps.getGeneratedKeys();

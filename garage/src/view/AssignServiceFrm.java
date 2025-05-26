@@ -217,8 +217,21 @@ public class AssignServiceFrm extends JFrame implements ActionListener{
             }System.out.println("Slot map size: " + slotMap.size());
             for (String slot : slotMap.keySet()) {
             }
-            
         } else if(btnClicked.equals(btnNext)){
+            boolean allAssigned = true;
+            for (AddedSerCom asc : carbill.getAddedSerCom()) {
+                if (asc.getTechSer() == null || asc.getTechSer().isEmpty()) {
+                    allAssigned = false;
+                    break;
+                }
+            }
+
+            if (!allAssigned) {
+                JOptionPane.showMessageDialog(this, "Please assign at least one technician to every service before continuing.");
+                return;
+            }
+
+            // Nếu tất cả đều đã được gán kỹ thuật viên
             this.dispose();
             new SelectSlotFrm(this.invoice).setVisible(true);
         }

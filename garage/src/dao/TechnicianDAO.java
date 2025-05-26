@@ -82,11 +82,11 @@ public class TechnicianDAO extends DAO {
             }
 
             // 3. Tính slot rảnh từng technician
-//            LocalTime now = LocalTime.now().withSecond(0).withNano(0);
-//            LocalTime defaultStart = LocalTime.of(8,0);
-//            LocalTime dayStart = date.isEqual(LocalDate.now())?
-//                    (now.isAfter(defaultStart) ? now:defaultStart) : defaultStart;
-            LocalTime dayStart = LocalTime.of(8, 0);
+            LocalTime now = LocalTime.now().withSecond(0).withNano(0);
+            LocalTime defaultStart = LocalTime.of(8,0);
+            LocalTime dayStart = date.isEqual(LocalDate.now())?
+                    (now.isAfter(defaultStart) ? now:defaultStart) : defaultStart;
+//            LocalTime dayStart = LocalTime.of(8, 0);
             LocalTime dayEnd = LocalTime.of(18, 0);
             HashMap<Technician, List<TimeRange>> freeMap = new HashMap<>();
 

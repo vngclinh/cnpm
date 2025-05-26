@@ -44,4 +44,19 @@ public class CarDAO extends DAO {
             e.printStackTrace();
         }
     }
+        public boolean isPlateNumberExists(String plateNumber) throws SQLException {
+            String sql = "SELECT COUNT(*) FROM tblcar WHERE platenumber = ?";
+            try (PreparedStatement ps = con.prepareStatement(sql)) {
+                ps.setString(1, plateNumber);
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    int count = rs.getInt(1);
+                    return count > 0;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return false;
+    }
+
 }

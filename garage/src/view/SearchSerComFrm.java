@@ -198,7 +198,7 @@ public class SearchSerComFrm extends JFrame implements ActionListener {
                         JOptionPane.YES_NO_OPTION
                     );
                     if (choice == JOptionPane.YES_OPTION) {
-                        temp.setQuantity(quantity);
+                        temp.setQuantity(quantity + temp.getQuantity());
 
                         // Cập nhật dòng trong bảng
                         for (int row = 0; row < invoiceTableModel.getRowCount(); row++) {

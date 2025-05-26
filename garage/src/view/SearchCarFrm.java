@@ -126,7 +126,7 @@ public class SearchCarFrm extends JFrame implements ActionListener {
         if(btnClicked.equals(btnSearch)){
             String keyword = txtSearch.getText().trim();
             if(keyword.isEmpty()){
-                JOptionPane.showConfirmDialog(this, "Please enter plate number to search");
+                JOptionPane.showMessageDialog(this, "Please enter plate number to search");
                 return;
             }
             CarDAO cd = new CarDAO();

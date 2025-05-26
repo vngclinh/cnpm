@@ -15,7 +15,7 @@ public class ConfirmFrm extends JFrame implements ActionListener{
     private JLabel lblTotal;
     private JTable tblDetails;
     private DefaultTableModel tableModel;
-    private JButton btnConfirm;
+    private JButton btnConfirm, btnCancel;
 
     public ConfirmFrm(PrevInvoice invoice) {
         super("Confirm Invoice");
@@ -71,7 +71,7 @@ public class ConfirmFrm extends JFrame implements ActionListener{
         mainPanel.add(Box.createRigidArea(new Dimension(0, 10)));
 
         // Table
-        String[] columns = {"ID", "Name", "Unit Price", "Quantity", "Total", "Technicians' ID"};
+        String[] columns = {"ID", "Name", "Unit Price", "Quantity", "Total", "Technicians"};
         tableModel = new DefaultTableModel(columns, 0) {
             public boolean isCellEditable(int row, int column) {
                 return false;
@@ -80,6 +80,12 @@ public class ConfirmFrm extends JFrame implements ActionListener{
         tblDetails = new JTable(tableModel);
         tblDetails.setFont(new Font("SansSerif", Font.PLAIN, 14));
         tblDetails.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 14));
+        tblDetails.getColumnModel().getColumn(0).setPreferredWidth(40);   
+        tblDetails.getColumnModel().getColumn(1).setPreferredWidth(120); 
+        tblDetails.getColumnModel().getColumn(2).setPreferredWidth(80);   
+        tblDetails.getColumnModel().getColumn(3).setPreferredWidth(80);  
+        tblDetails.getColumnModel().getColumn(4).setPreferredWidth(80);   
+        tblDetails.getColumnModel().getColumn(5).setPreferredWidth(230);  
         JScrollPane scrollPane = new JScrollPane(tblDetails);
         scrollPane.setPreferredSize(new Dimension(650, 150));
         mainPanel.add(scrollPane);
@@ -91,7 +97,7 @@ public class ConfirmFrm extends JFrame implements ActionListener{
             StringBuilder sb = new StringBuilder();
             for (TechService ts : asc.getTechSer()) {
                 if (ts != null && ts.getTech() != null) {
-                    sb.append(ts.getTech().getId()).append(", ");
+                    sb.append(ts.getTech().getFullname()).append(", ");
                 }
             }
             if (sb.length() > 0) {
@@ -111,7 +117,6 @@ public class ConfirmFrm extends JFrame implements ActionListener{
         tableModel.addRow(row);
     }
 
-
         // Bottom panel
         JPanel totalPanel = new JPanel(new BorderLayout());
         lblTotal = new JLabel("Total: " + this.invoice.getTotal());
@@ -124,12 +129,13 @@ public class ConfirmFrm extends JFrame implements ActionListener{
         // Panel chứa Cancel và Confirm ở hai bên
         JPanel buttonPanel = new JPanel(new BorderLayout());
 
-        JButton btnCancel = new JButton("Cancel");
+        btnCancel = new JButton("Cancel");
         btnCancel.setFont(btnCancel.getFont().deriveFont(Font.BOLD, 14f));
         buttonPanel.add(btnCancel, BorderLayout.WEST);
 
         btnConfirm = new JButton("Confirm");
         btnConfirm.addActionListener(this);
+        btnCancel.addActionListener(this);
         btnConfirm.setFont(btnConfirm.getFont().deriveFont(Font.BOLD, 14f));
         buttonPanel.add(btnConfirm, BorderLayout.EAST);
 
@@ -141,17 +147,15 @@ public class ConfirmFrm extends JFrame implements ActionListener{
     public void actionPerformed(ActionEvent e){
         JButton btnClicked = (JButton)e.getSource();
         if(btnClicked.equals(btnConfirm)){
-        PrevInvoiceDAO pi = new PrevInvoiceDAO();
-        boolean success = pi.addInvoice(invoice);
-
-        if (success) {
-            JOptionPane.showMessageDialog(this, "Create temporary invoice successfully");
-            new TechMngHomeFrm(this.invoice.getUser()).setVisible(true);
-            this.dispose();
-        } else {
-            JOptionPane.showMessageDialog(this, "Failed to create invoice. Please check again.", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-
+            PrevInvoiceDAO pi = new PrevInvoiceDAO();
+            boolean success = pi.addInvoice(invoice);
+            if (success) {
+                JOptionPane.showMessageDialog(this, "Create temporary invoice successfully");
+                new TechMngHomeFrm(this.invoice.getUser()).setVisible(true);
+                this.dispose();
+            } else {
+                JOptionPane.showMessageDialog(this, "Failed to create invoice. Please check again.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }else{
             int choice = JOptionPane.showConfirmDialog(
                 this,

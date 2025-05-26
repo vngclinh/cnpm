@@ -23,9 +23,4 @@ public class DAO {
             }
         }
     }
-
-    // Ví dụ dùng thử
-    public static void main(String[] args) {
-        new DAO(); // tạo kết nối
-    }
 }
